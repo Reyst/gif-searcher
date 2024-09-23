@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     id("org.jetbrains.kotlin.plugin.parcelize")
 }
 
@@ -21,6 +22,9 @@ android {
         // it should be moved into Env. variables for security, and build with CI/CD
         resValue("string", "giphy_key", "c9KOoXzkKSEtf3pPfcRBmiJbc7HEpjbT")
         resValue("string", "base_url", "https://api.giphy.com/")
+        vectorDrawables {
+            useSupportLibrary = true
+        }
     }
 
     buildTypes {
@@ -41,7 +45,15 @@ android {
     }
 
     buildFeatures {
-        viewBinding = true
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.15"
+    }
+    packaging {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
     }
 
 }
@@ -50,26 +62,28 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
 
     // -----
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.runtime.android)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+
     implementation(platform(libs.koin.bom))
     implementation(libs.koin.android)
-    testImplementation(libs.koin.test.junit4)
-    testImplementation(libs.koin.android.test)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockk)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     implementation(libs.gson)
 
-    implementation(libs.androidx.paging)
+    implementation(libs.androidx.paging.compose)
 
-    implementation(libs.coil)
     implementation(libs.coil.gif)
+    implementation(libs.coil.compose)
 
     implementation (libs.kotlin.reflect)
     // -----
@@ -77,4 +91,15 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
+    testImplementation(libs.koin.test.junit4)
+    testImplementation(libs.koin.android.test)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
 }
