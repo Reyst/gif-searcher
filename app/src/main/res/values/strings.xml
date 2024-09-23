@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Giphy Searcher</string>
+    <string name="query_caption">Query</string>
+    <string name="key_exception">Problem with your service key</string>
+    <string name="check_query">Check your query, It contains incorrect sybols or it\'s too long.</string>
+    <string name="service_down">Giphy service is down, try some time late.</string>
+    <string name="general_error">Something went wrong.</string>
+</resources>
